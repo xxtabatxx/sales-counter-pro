@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f3f6fc">
+<title>営業カウンター PRO</title>
+<style>
+:root{--navy:#13233f;--muted:#66758d;--blue:#2367e8;--green:#139e70;--bg:#f3f6fc;--line:#e6ebf3;--shadow:0 5px 22px rgba(22,47,85,.055)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;-webkit-tap-highlight-color:transparent}
+button,input,select{font:inherit}button{border:0;cursor:pointer;touch-action:manipulation}main{max-width:600px;margin:auto;padding:20px 15px max(45px,env(safe-area-inset-bottom))}
+header{background:linear-gradient(120deg,#152d55,#265cbb);color:white;padding:22px 20px;border-radius:24px;box-shadow:0 10px 26px #205ac12c}
+h1{font-size:25px;letter-spacing:-.8px;margin:0 0 6px}h2{font-size:18px;margin:27px 2px 12px}.subtitle,.small,.unit,.note,.section-note{font-size:12px;color:var(--muted)}header .subtitle{color:white;opacity:.86}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}.card,.item{background:white;border:1px solid #eaf0f6;border-radius:19px;box-shadow:var(--shadow)}.card{padding:16px}.item{padding:15px;margin-bottom:10px}
+.value{font-size:36px;font-weight:850;letter-spacing:-1.5px;margin:4px 0}.bar{height:7px;background:#eaf0f6;border-radius:8px;overflow:hidden;margin-top:13px}.fill{height:100%;width:0%;background:var(--blue);border-radius:8px;transition:width .2s}
+.flex,.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.label{font-size:16px;font-weight:780}.note{line-height:1.55;margin-top:4px}.count{font-size:27px;font-weight:800;font-variant-numeric:tabular-nums;min-width:24px;text-align:right}.add{background:var(--blue);color:white;border-radius:13px;padding:12px 17px;font-size:19px;font-weight:800}.primary{width:100%;background:var(--green);color:white;border-radius:14px;padding:15px 12px;font-size:17px;font-weight:850}.secondary{background:#eef3fb;color:#294468;border-radius:12px;padding:11px;font-size:13px;font-weight:750}.wide{margin-top:12px}.split{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.metric{text-align:center;border:1px solid var(--line);border-radius:14px;padding:11px 5px}.metric b{display:block;font-size:23px;margin:4px 0}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.mini{border-radius:14px;padding:12px 8px;background:#f6f9fe;text-align:center}.mini strong{display:block;font-size:22px;margin-top:5px}.mini small{color:var(--muted);font-size:11px}.field{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fafcff;color:var(--navy);margin-top:5px}.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.section-note{line-height:1.6;margin:-5px 3px 13px}.history{border-top:1px solid var(--line);padding:12px 0}.history:first-child{border-top:0;padding-top:0}.historyhead{display:flex;align-items:center;justify-content:space-between;gap:8px}.history-title{font-weight:750}.history-number{font-size:12px;color:#4b5b72}textarea{width:100%;resize:vertical;min-height:200px;border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--navy);background:#fafcff;font-size:13px;line-height:1.65}footer{text-align:center;margin-top:25px;font-size:11px;line-height:1.7;color:#8290a5}
+dialog{border:0;padding:0;width:calc(100% - 24px);max-width:500px;max-height:calc(100dvh - 28px);border-radius:22px;box-shadow:0 22px 90px #0517335e;overflow:auto;background:white}dialog::backdrop{background:#15233a94}.dialog-body{padding:19px}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.dialog-head h2{margin:0;font-size:21px}.close{background:#eef2f8;border-radius:100px;padding:8px 12px;font-size:18px;color:#4d5f76}.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0 18px}.choice{border:2px solid #e2e8f3;background:#f9fbfe;border-radius:13px;color:#2f4463;padding:12px 5px;font-size:14px;font-weight:760}.choice.selected{border-color:var(--blue);background:#eaf2ff;color:#1456cb}.choice.selected.kind{border-color:#12a474;background:#e6f8ee;color:#0b835b}.dialog-label{font-weight:800;font-size:14px;margin-top:17px}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom));background:#223555;color:white;padding:12px 18px;border-radius:12px;font-size:13px;pointer-events:none;z-index:20;opacity:0;transition:opacity .2s;max-width:90%;text-align:center}.toast.show{opacity:1}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.actions button{flex:1 1 130px}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.calendar-month{font-size:18px;font-weight:850}
+.calendar-nav{display:flex;gap:6px}
+.calendar-nav button{background:#eef3fb;color:#294468;border-radius:10px;padding:8px 12px;font-weight:800}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.calendar-weekday{text-align:center;font-size:11px;color:var(--muted);padding:5px 0}
+.calendar-day{min-height:62px;border:1px solid var(--line);border-radius:10px;background:#fafcff;padding:5px 2px;text-align:center;color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px}
+.calendar-day .day-num{font-size:12px;font-weight:800}
+.calendar-day .day-sales{font-size:10px;color:var(--green);font-weight:800}
+.calendar-day .day-approach{font-size:9px;color:var(--muted)}
+.calendar-day.has-data{background:#eaf8f1;border-color:#bde8d1}
+.calendar-day.today{outline:2px solid var(--blue);outline-offset:-2px}
+.calendar-day.selected{background:#eaf2ff;border-color:var(--blue)}
+.calendar-day.empty{visibility:hidden}
+.calendar-legend{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.5}
+@media(max-width:380px){.calendar-grid{gap:3px}.calendar-day{min-height:55px;border-radius:8px}.calendar-day .day-approach{font-size:8px}}
+
+</style>
+</head>
+<body><main>
+<header><h1>🔥 営業カウンター PRO</h1><div class="subtitle" id="date"></div></header>
+
+<div class="item" style="margin-top:16px;background:#eaf2ff;text-align:center"><div class="small">📍 今日の日付（日本時間）</div><div id="todayBig" style="font-size:23px;font-weight:850;color:#13233f;margin-top:5px"></div></div>
+<h2>🗓️ 月間カレンダー</h2>
+<div class="item">
+  <div class="calendar-head">
+    <button class="secondary" onclick="changeCalendarMonth(-1)">‹ 前月</button>
+    <div class="calendar-month" id="calendarMonthLabel"></div>
+    <button class="secondary" onclick="changeCalendarMonth(1)">翌月 ›</button>
+  </div>
+  <div class="calendar-grid" id="calendarWeekdays">
+    <div class="calendar-weekday">日</div><div class="calendar-weekday">月</div><div class="calendar-weekday">火</div><div class="calendar-weekday">水</div><div class="calendar-weekday">木</div><div class="calendar-weekday">金</div><div class="calendar-weekday">土</div>
+  </div>
+  <div class="calendar-grid" id="calendarDays"></div>
+  <div class="calendar-legend">獲得件数・母数を日付ごとに表示。記録がある日は緑色、今日は青枠で表示します。</div>
+  <div class="note" id="calendarSelectedSummary"></div>
+</div>
+
+<h2>🎯 月間目標・進捗</h2>
+<div class="item">
+  <div class="fieldrow">
+    <label class="small">月間獲得目標（件）<input class="field" type="number" id="monthlyGoal" min="0" step="1" value="60"></label>
+    <label class="small">今月の残り営業日数<input class="field" type="number" id="remainingDays" min="0" step="1" value="10"></label>
+  </div>
+  <div class="fieldrow" style="margin-top:10px">
+    <label class="small">本日の母数目標<input class="field" type="number" id="dailyApproachGoal" min="0" step="1" value="20"></label>
+    <label class="small">本日の獲得目標<input class="field" type="number" id="dailySalesGoal" min="0" step="1" value="3"></label>
+  </div>
+  <button class="secondary wide" style="width:100%" onclick="saveGoalSettings()">目標・残り営業日数を保存</button>
+  <div class="grid">
+    <div class="card"><div class="small">今月の獲得</div><div class="value" id="monthSales">0</div><div class="unit">件</div></div>
+    <div class="card"><div class="small">目標達成率</div><div class="value" id="goalRate">0%</div><div class="bar"><div class="fill" id="goalBar"></div></div></div>
+    <div class="card"><div class="small">残り必要件数</div><div class="value" id="remainingSales">60</div><div class="unit">件</div></div>
+    <div class="card"><div class="small">1営業日あたり必要</div><div class="value" id="neededPerDay">—</div><div class="unit">件／日</div></div>
+  </div>
+  <div class="metrics">
+    <div class="mini"><small>営業日平均獲得</small><strong id="avgSales">0</strong><small>件／営業日</small></div>
+    <div class="mini"><small>月末着地予測</small><strong id="forecast">0</strong><small id="forecastRate">達成率 0%</small></div>
+  </div>
+  <div class="note" id="activeDaysNote">営業日数は、母数または獲得記録がある日を自動カウントします。</div>
+</div>
+
+<div class="item" id="selectedDayBanner" style="margin-top:14px;background:#eaf2ff"><div class="flex"><div><div class="label">📆 記録する日付</div><div class="note" id="editingDate"></div></div><button class="secondary" onclick="goToday()">今日に戻す</button></div></div>
+<div class="grid">
+  <div class="card"><div class="small">選択日の母数</div><div class="value" id="total">0</div><div class="unit" id="dailyApproachGoalLabel">目標 20母数</div><div class="bar"><div class="fill" id="bar1"></div></div></div>
+  <div class="card"><div class="small">選択日の獲得</div><div class="value" id="sales">0</div><div class="unit" id="dailySalesGoalLabel">目標 3件</div><div class="bar"><div class="fill" id="bar2" style="background:var(--green)"></div></div></div>
+</div>
+<div class="card" style="margin-top:11px"><div class="flex"><div><div class="small">選択日の総合獲得率</div><div class="value" id="rate" style="font-size:32px">0%</div></div><div class="small">獲得 ÷ 母数</div></div></div>
+
+<h2>📊 アプローチ母数</h2><div class="section-note">声をかけたら「＋1」。獲得したときは下の緑ボタンから内訳を登録！</div>
+<div class="item"><div class="flex"><div style="flex:1"><div class="label">🎯 カットイン</div><div class="note" id="cut-detail">獲得 0件 / 成約率 —</div></div><div class="count" id="cut">0</div><button class="add" onclick="addApproach('cut')">＋1</button></div></div>
+<div class="item"><div class="flex"><div style="flex:1"><div class="label">🛍️ 物販</div><div class="note" id="product-detail">獲得 0件 / 成約率 —</div></div><div class="count" id="product">0</div><button class="add" onclick="addApproach('product')">＋1</button></div></div>
+<div class="item"><div class="flex"><div style="flex:1"><div class="label">🥤 試飲</div><div class="note" id="sample-detail">獲得 0件 / 成約率 —</div></div><div class="count" id="sample">0</div><button class="add" onclick="addApproach('sample')">＋1</button></div></div>
+<div class="item"><div class="flex"><div style="flex:1"><div class="label">🔄 スイング</div><div class="note" id="swing-detail">獲得 0件 / 成約率 —</div></div><div class="count" id="swing">0</div><button class="add" onclick="addApproach('swing')">＋1</button></div></div>
+
+<h2>🏆 獲得記録</h2><div class="item">
+<div class="flex"><div><div class="label">選択日の獲得件数</div><div class="note">手法・商材・着荷月を選んで記録</div></div><div class="count" id="sales2">0</div></div>
+<button class="primary wide" onclick="openWin('new')">🔥 獲得 ＋1件を記録</button>
+<div id="today-unknown" class="note"></div><button class="secondary wide" id="classifyToday" style="display:none;width:100%" onclick="openWin('classify',selectedCalendarDate)">過去の未分類獲得に内訳を付ける</button>
+</div>
+<div class="card"><div class="label">💧 選択日の商材別内訳</div><div class="split"><div class="metric"><div class="small">🏞️ 天然水</div><b id="natural">0</b><div class="unit">件</div></div><div class="metric"><div class="small">🚰 浄水型</div><b id="filter">0</b><div class="unit">件</div></div></div><div class="note" id="otherWins"></div></div>
+
+
+<h2>🔎 直近7日間の分析</h2><div class="item"><div class="row"><span class="label">7日間の合計</span><span id="weekTotal" class="small"></span></div><div class="metrics">
+<div class="mini"><small>カットイン</small><strong id="week-cut">0</strong><small id="week-cut-rate">成約率 —</small></div><div class="mini"><small>物販</small><strong id="week-product">0</strong><small id="week-product-rate">成約率 —</small></div><div class="mini"><small>試飲</small><strong id="week-sample">0</strong><small id="week-sample-rate">成約率 —</small></div><div class="mini"><small>スイング</small><strong id="week-swing">0</strong><small id="week-swing-rate">成約率 —</small></div><div class="mini"><small>天然水</small><strong id="week-natural">0</strong></div><div class="mini"><small>浄水型</small><strong id="week-filter">0</strong></div></div><div id="week-note" class="note"></div></div>
+<h2>📅 直近7日間の履歴</h2><div class="item" id="history"></div>
+
+<h2>📋 営業日報</h2><div class="item"><div class="note" style="margin:0 0 10px">コピーしてチャットに貼り、営業分析に使えます。</div><textarea id="report" readonly aria-label="本日の日報"></textarea><button class="primary wide" onclick="copyReport()" style="background:var(--blue)">📋 選択日の日報をコピー</button></div>
+<div class="actions"><button class="secondary" onclick="undo()">↩ 直前の操作を戻す</button><button class="secondary" onclick="resetToday()">選択日をリセット</button><button class="secondary" onclick="backup()">💾 全記録バックアップ</button><button class="secondary" onclick="document.getElementById('restoreInput').click()">📂 バックアップ復元</button><input id="restoreInput" type="file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)"></div>
+<footer>SALES COUNTER PRO | 積み重ねが結果を変える🔥<br>記録はこの端末・ブラウザ内に保存されます。機種変更前はバックアップしてください。</footer>
+</main>
+
+<dialog id="winDialog"><div class="dialog-body">
+<div class="dialog-head"><h2 id="dialogTitle">🔥 獲得を記録</h2><button class="close" onclick="closeWin()">✕</button></div><div class="note" id="dialogNote"></div>
+<div class="dialog-label">① どの手法で獲得した？</div><div class="choice-grid" id="methodChoices"><button class="choice" data-method="cut" onclick="chooseMethod('cut')">🎯 カットイン</button><button class="choice" data-method="product" onclick="chooseMethod('product')">🛍️ 物販</button><button class="choice" data-method="sample" onclick="chooseMethod('sample')">🥤 試飲</button><button class="choice" data-method="swing" onclick="chooseMethod('swing')">🔄 スイング</button><button class="choice" data-method="other" onclick="chooseMethod('other')">🔁 戻り・その他</button></div>
+<div class="dialog-label">② 天然水？ 浄水型？</div><div class="choice-grid"><button class="choice kind" data-kind="natural" onclick="chooseKind('natural')">🏞️ 天然水</button><button class="choice kind" data-kind="filter" onclick="chooseKind('filter')">🚰 浄水型</button></div>
+<div class="dialog-label">③ 着荷月</div><div class="note">商品が着荷する予定の月を選んでください。日報に月別件数が反映されます。</div><select class="field" id="arrivalMonth"></select>
+<button class="primary wide" id="saveWin" onclick="saveWin()" disabled>獲得を保存する</button>
+</div></dialog><div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const STORE="sales-counter-pro-v2", SETTINGS="sales-counter-pro-goals-v2";
+const METHODS={cut:"カットイン",product:"物販",sample:"試飲",swing:"スイング",other:"戻り・その他"}, KINDS={natural:"天然水",filter:"浄水型"};
+let data={};try{const raw=JSON.parse(localStorage.getItem(STORE)||"{}");if(raw&&typeof raw==="object"&&!Array.isArray(raw))data=raw;}catch(e){}
+let settings={};try{settings=JSON.parse(localStorage.getItem(SETTINGS)||"{}")||{};}catch(e){}
+let last=null,modal={mode:"new",day:"",method:"",kind:""},toastTimeout;
+function jstParts(d=new Date()){const parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(d);return Object.fromEntries(parts.filter(x=>x.type!=="literal").map(x=>[x.type,x.value]))}
+function dateKey(d=new Date()){const x=jstParts(d);return x.year+"-"+x.month+"-"+x.day}
+function monthKey(d=new Date()){return dateKey(d).slice(0,7)}
+function empty(){return {cut:0,product:0,sample:0,swing:0,sales:0,records:[]}}
+function day(k=dateKey()){if(!data[k]||typeof data[k]!=="object")data[k]=empty();const r=data[k];for(const f of ["cut","product","sample","swing","sales"]){if(!Number.isFinite(Number(r[f]))||Number(r[f])<0)r[f]=0;else r[f]=Math.floor(Number(r[f]))}if(!Array.isArray(r.records))r.records=[];return r}
+function records(r){return (r.records||[]).filter(x=>x&&METHODS[x.method]&&KINDS[x.kind])}
+function unknown(r){return Math.max(0,r.sales-records(r).length)}
+function methodWins(r,m){return records(r).filter(x=>x.method===m).length}
+function kindWins(r,k){return records(r).filter(x=>x.kind===k).length}
+function pct(n,d){return d?(100*n/d).toFixed(1)+"%":"—"}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(data));localStorage.setItem(SETTINGS,JSON.stringify(settings))}catch(e){alert("記録を保存できませんでした。ブラウザの保存領域を確認してください。")}}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>t.classList.remove("show"),2400)}
+function addApproach(m){if(!["cut","product","sample","swing"].includes(m))return;const k=selectedCalendarDate;day(k)[m]++;last={action:"approach",day:k,method:m};save();render();showToast(METHODS[m]+" ＋1母数")}
+function setupArrivalOptions(){const s=document.getElementById("arrivalMonth");s.innerHTML="";const now=new Date();for(let i=-2;i<=12;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);const v=monthKey(d),o=document.createElement("option");o.value=v;o.textContent=d.getFullYear()+"年"+(d.getMonth()+1)+"月";s.append(o)}s.value=monthKey(new Date())}
+function openWin(mode="new",k=selectedCalendarDate){const r=day(k);if(mode==="classify"&&unknown(r)<=0){showToast("未分類の獲得はありません");return}modal={mode,day:k,method:"",kind:""};document.getElementById("dialogTitle").textContent=mode==="new"?"🔥 新しい獲得を記録":"📝 以前の獲得を分類";document.getElementById("dialogNote").textContent=mode==="new"?"手法・商材・着荷月を選んで保存してください。":"未分類の獲得に内訳を付けます。獲得総数は増えません。";document.getElementById("saveWin").textContent=mode==="new"?"🔥 獲得 ＋1件を保存":"この1件の内訳を登録";document.getElementById("arrivalMonth").value=monthKey(new Date());refreshChoices();document.getElementById("winDialog").showModal()}
+function closeWin(){document.getElementById("winDialog").close()}
+function chooseMethod(m){if(METHODS[m])modal.method=m;refreshChoices()}
+function chooseKind(k){if(KINDS[k])modal.kind=k;refreshChoices()}
+function refreshChoices(){document.querySelectorAll("[data-method]").forEach(b=>b.classList.toggle("selected",b.dataset.method===modal.method));document.querySelectorAll("[data-kind]").forEach(b=>b.classList.toggle("selected",b.dataset.kind===modal.kind));document.getElementById("saveWin").disabled=!modal.method||!modal.kind}
+function saveWin(){if(!METHODS[modal.method]||!KINDS[modal.kind])return;const r=day(modal.day);if(modal.mode==="classify"&&unknown(r)<=0){closeWin();render();return}const rec={id:Date.now()+"-"+Math.random().toString(36).slice(2),method:modal.method,kind:modal.kind,arrivalMonth:document.getElementById("arrivalMonth").value||monthKey(new Date()),time:new Date().toISOString()};r.records.push(rec);if(modal.mode==="new")r.sales++;last={action:modal.mode==="new"?"newWin":"classify",day:modal.day,id:rec.id};const mode=modal.mode;closeWin();save();render();showToast(mode==="new"?"🔥 1件獲得！着荷月も記録しました":"✅ 過去の獲得を分類しました")}
+function undo(){if(!last){alert("戻せる操作がありません（ページを開き直すと直前操作はリセットされます）");return}const r=day(last.day);if(last.action==="approach"&&r[last.method]>0)r[last.method]--;if(last.action==="newWin"||last.action==="classify"){const i=r.records.findIndex(x=>x.id===last.id);if(i>=0){r.records.splice(i,1);if(last.action==="newWin"&&r.sales>0)r.sales--}}last=null;save();render();showToast("直前の操作を戻しました")}
+function resetToday(){if(confirm("選択日の母数と獲得記録をすべてリセットしますか？\nこの操作は取り消せません。")){data[selectedCalendarDate]=empty();last=null;save();render();showToast("選択日の記録をリセットしました")}}
+function saveGoalSettings(){settings.monthlyGoal=Math.max(0,Math.floor(Number(document.getElementById("monthlyGoal").value)||0));settings.remainingDays=Math.max(0,Math.floor(Number(document.getElementById("remainingDays").value)||0));settings.dailyApproachGoal=Math.max(0,Math.floor(Number(document.getElementById("dailyApproachGoal").value)||0));settings.dailySalesGoal=Math.max(0,Math.floor(Number(document.getElementById("dailySalesGoal").value)||0));settings.goalMonth=monthKey(new Date());save();render();showToast("目標・残り営業日数を保存しました")}
+function datePast(i){const [y,m,d]=dateKey().split("-").map(Number);return dateKey(new Date(Date.UTC(y,m-1,d-i,12)))}
+function getMonthStats(mk){let sales=0,approach=0,activeDays=0;const [y,mo]=mk.split("-").map(Number),n=new Date(y,mo,0).getDate();for(let i=1;i<=n;i++){const k=mk+"-"+String(i).padStart(2,"0");if(k>dateKey())continue;const r=data[k];if(!r)continue;const total=(Number(r.cut)||0)+(Number(r.product)||0)+(Number(r.sample)||0)+(Number(r.swing)||0),s=Number(r.sales)||0;sales+=s;approach+=total;if(total>0||s>0)activeDays++}return {sales,approach,activeDays}}
+function arrivalCountsForDay(r){const counts={};for(const rec of records(r)){const a=rec.arrivalMonth||"未設定";counts[a]=(counts[a]||0)+1}return counts}
+function buildReport(k=selectedCalendarDate){const t=day(k),total=t.cut+t.product+t.sample+t.swing,mk=k.slice(0,7),arr=arrivalCountsForDay(t),monthStats=getMonthStats(mk);const lines=["🔥 営業日報（"+k+"）","【ユーザー数】","◯母数："+total+"件","◯獲得："+t.sales+"件","◯総合獲得率："+pct(t.sales,total),"【手法別】",...["cut","product","sample","swing"].map(m=>"・"+METHODS[m]+"："+t[m]+"母数／"+methodWins(t,m)+"件（"+pct(methodWins(t,m),t[m])+"）"),"・戻り・その他："+methodWins(t,"other")+"件","【商材別】","・天然水："+kindWins(t,"natural")+"件","・浄水型："+kindWins(t,"filter")+"件","【着荷月別件数】"];const entries=Object.entries(arr).filter(([a])=>a==="未設定"||/^\d{4}-\d{2}$/.test(a)).sort((a,b)=>a[0].localeCompare(b[0]));if(entries.length){for(const [a,n] of entries)lines.push((a==="未設定"?"未設定":Number(a.slice(5))+"月")+"："+n+"件")}else lines.push("該当なし");lines.push("【月間進捗】","◯月間目標："+(settings.monthlyGoal??60)+"件","◯今月獲得："+monthStats.sales+"件","◯目標達成率："+pct(monthStats.sales,settings.monthlyGoal??60),"◯残り必要件数："+Math.max(0,(settings.monthlyGoal??60)-monthStats.sales)+"件");if(unknown(t))lines.push("※未分類の獲得："+unknown(t)+"件（旧記録など）");return lines.join("\n")}
+async function copyReport(){const txt=document.getElementById("report").value;try{await navigator.clipboard.writeText(txt);showToast("📋 日報をコピーしました")}catch(e){const f=document.getElementById("report");f.focus();f.select();try{if(document.execCommand("copy")){showToast("📋 日報をコピーしました");return}}catch(err){}alert("日報を選択しました。長押ししてコピーしてください")}}
+function backup(){const blob=new Blob([JSON.stringify({data,settings},null,2)],{type:"application/json;charset=utf-8"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="sales-counter-backup-"+dateKey()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);showToast("バックアップを保存してください")}
+async function restoreBackup(event){const input=event.target,file=input.files&&input.files[0];if(!file)return;try{const incoming=JSON.parse(await file.text());if(incoming.data&&typeof incoming.data==="object"){data=incoming.data;settings=incoming.settings||{}}else if(incoming&&typeof incoming==="object"&&!Array.isArray(incoming)){data=incoming}else throw Error("形式が違います");if(!confirm("バックアップ内容で現在の記録を上書きしますか？"))return;save();render();showToast("バックアップを復元しました")}catch(e){alert("復元できませんでした："+e.message)}finally{input.value=""}}
+
+let calendarMonth = new Date(Number(monthKey().slice(0,4)),Number(monthKey().slice(5))-1,1);
+let selectedCalendarDate = dateKey();
+function changeCalendarMonth(delta){
+  calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth()+delta, 1);
+  renderCalendar();
+}
+function selectCalendarDate(key){
+  selectedCalendarDate = key;
+  render();
+  document.getElementById("selectedDayBanner").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function goToday(){selectedCalendarDate=dateKey();calendarMonth=new Date(Number(monthKey().slice(0,4)),Number(monthKey().slice(5))-1,1);render()}
+function renderCalendar(){
+  const y=calendarMonth.getFullYear(), m=calendarMonth.getMonth();
+  document.getElementById("calendarMonthLabel").textContent=y+"年"+(m+1)+"月";
+  const wrap=document.getElementById("calendarDays");
+  wrap.replaceChildren();
+  const first=new Date(y,m,1).getDay(), last=new Date(y,m+1,0).getDate(), today=dateKey();
+  for(let i=0;i<first;i++){
+    const blank=document.createElement("div");blank.className="calendar-day empty";wrap.append(blank);
+  }
+  for(let d=1;d<=last;d++){
+    const key=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const r=data[key]||{cut:0,product:0,sample:0,swing:0,sales:0};
+    const approaches=(Number(r.cut)||0)+(Number(r.product)||0)+(Number(r.sample)||0)+(Number(r.swing)||0);
+    const sales=Number(r.sales)||0;
+    const b=document.createElement("button");
+    b.type="button";b.className="calendar-day"+((approaches||sales)?" has-data":"")+(key===today?" today":"")+(key===selectedCalendarDate?" selected":"");
+    const dn=document.createElement("span");dn.className="day-num";dn.textContent=d;
+    const ds=document.createElement("span");ds.className="day-sales";ds.textContent=sales?"獲得 "+sales:"";
+    const da=document.createElement("span");da.className="day-approach";da.textContent=approaches?"母数 "+approaches:"";
+    b.append(dn,ds,da);b.addEventListener("click",()=>selectCalendarDate(key));wrap.append(b);
+  }
+  const summary=document.getElementById("calendarSelectedSummary");
+  if(selectedCalendarDate.slice(0,7)!==y+"-"+String(m+1).padStart(2,"0")){
+    summary.textContent="日付をタップすると、その日の母数・獲得件数を確認できます。";
+  }else{
+    const r=data[selectedCalendarDate]||{cut:0,product:0,sample:0,swing:0,sales:0};
+    const total=(Number(r.cut)||0)+(Number(r.product)||0)+(Number(r.sample)||0)+(Number(r.swing)||0);
+    summary.textContent=selectedCalendarDate+"：母数 "+total+"件／獲得 "+(Number(r.sales)||0)+"件";
+  }
+}
+
+function render(){const today=dateKey(),mk=monthKey(new Date()),t=day(selectedCalendarDate),total=t.cut+t.product+t.sample+t.swing;document.getElementById("date").textContent=new Date().toLocaleString("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"long",day:"numeric",weekday:"long",hour:"2-digit",minute:"2-digit"})+" JST";document.getElementById("todayBig").textContent=new Date().toLocaleDateString("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"long",day:"numeric",weekday:"long"});document.getElementById("editingDate").textContent=selectedCalendarDate+(selectedCalendarDate===today?"（今日）":"（過去・未来の日付も編集可能）");if(settings.goalMonth!==mk){settings.goalMonth=mk;if(settings.monthlyGoal==null)settings.monthlyGoal=60;if(settings.remainingDays==null)settings.remainingDays=10;if(settings.dailyApproachGoal==null)settings.dailyApproachGoal=20;if(settings.dailySalesGoal==null)settings.dailySalesGoal=3;save()}document.getElementById("monthlyGoal").value=settings.monthlyGoal??60;document.getElementById("remainingDays").value=settings.remainingDays??10;document.getElementById("dailyApproachGoal").value=settings.dailyApproachGoal??20;document.getElementById("dailySalesGoal").value=settings.dailySalesGoal??3;
+const ms=getMonthStats(mk),goal=settings.monthlyGoal??60,remaining=Math.max(0,goal-ms.sales),avg=ms.activeDays?ms.sales/ms.activeDays:0,forecast=Math.round(avg*(ms.activeDays+(Number(settings.remainingDays)||0)));document.getElementById("monthSales").textContent=ms.sales;document.getElementById("goalRate").textContent=pct(ms.sales,goal);document.getElementById("goalBar").style.width=Math.min(goal?ms.sales/goal*100:0,100)+"%";document.getElementById("remainingSales").textContent=remaining;document.getElementById("neededPerDay").textContent=(Number(settings.remainingDays)||0)?(remaining/(Number(settings.remainingDays)||0)).toFixed(1):remaining===0?"0":"—";document.getElementById("avgSales").textContent=avg.toFixed(1);document.getElementById("forecast").textContent=forecast;document.getElementById("forecastRate").textContent="達成率 "+pct(forecast,goal);document.getElementById("activeDaysNote").textContent="今月の営業日："+ms.activeDays+"日（母数または獲得記録がある日）。着地予測は現在の営業日平均×（営業済日＋残り営業日）です。";
+for(const m of ["cut","product","sample","swing"]){document.getElementById(m).textContent=t[m];document.getElementById(m+"-detail").textContent="獲得 "+methodWins(t,m)+"件 / 成約率 "+pct(methodWins(t,m),t[m])}document.getElementById("sales").textContent=t.sales;document.getElementById("sales2").textContent=t.sales;document.getElementById("total").textContent=total;document.getElementById("rate").textContent=pct(t.sales,total);const dailyApproachGoal=settings.dailyApproachGoal??20,dailySalesGoal=settings.dailySalesGoal??3;document.getElementById("dailyApproachGoalLabel").textContent="目標 "+dailyApproachGoal+"母数";document.getElementById("dailySalesGoalLabel").textContent="目標 "+dailySalesGoal+"件";document.getElementById("bar1").style.width=Math.min(dailyApproachGoal?total/dailyApproachGoal*100:0,100)+"%";document.getElementById("bar2").style.width=Math.min(dailySalesGoal?t.sales/dailySalesGoal*100:0,100)+"%";document.getElementById("natural").textContent=kindWins(t,"natural");document.getElementById("filter").textContent=kindWins(t,"filter");const missing=unknown(t);document.getElementById("otherWins").textContent=methodWins(t,"other")?"戻り・その他での獲得："+methodWins(t,"other")+"件":"";document.getElementById("today-unknown").textContent=missing?"※内訳未登録の獲得が"+missing+"件あります。":"";document.getElementById("classifyToday").style.display=missing?"block":"none";
+let weekSales=0,weekTotal=0,weekUnknown=0,weeklyMethods={cut:0,product:0,sample:0,swing:0},weeklyCounts={cut:0,product:0,sample:0,swing:0},weeklyKinds={natural:0,filter:0};const history=document.getElementById("history");history.replaceChildren();for(let i=0;i<7;i++){const k=datePast(i),r=day(k),n=r.cut+r.product+r.sample+r.swing;weekSales+=r.sales;weekTotal+=n;weekUnknown+=unknown(r);for(const m of ["cut","product","sample","swing"]){weeklyMethods[m]=(weeklyMethods[m]||0)+methodWins(r,m);weeklyCounts[m]=(weeklyCounts[m]||0)+r[m]}for(const kind of ["natural","filter"])weeklyKinds[kind]+=kindWins(r,kind);const block=document.createElement("div");block.className="history";const head=document.createElement("div");head.className="historyhead";const name=document.createElement("span");name.className="history-title";name.textContent=k.slice(5).replace("-","/")+(i===0?"（今日）":"");const nums=document.createElement("span");nums.className="history-number";nums.textContent="母数 "+n+" ／ 獲得 "+r.sales+"件";head.append(name,nums);block.append(head);if(r.sales){const detail=document.createElement("div");detail.className="note";detail.textContent="天然水 "+kindWins(r,"natural")+"・浄水型 "+kindWins(r,"filter")+" ／ カットイン "+methodWins(r,"cut")+"・物販 "+methodWins(r,"product")+"・試飲 "+methodWins(r,"sample")+"・スイング "+methodWins(r,"swing");block.append(detail);if(unknown(r)>0){const b=document.createElement("button");b.className="secondary";b.textContent="未分類 "+unknown(r)+"件 → 内訳登録";b.onclick=()=>openWin("classify",k);block.append(b)}}history.append(block)}
+document.getElementById("weekTotal").textContent="母数 "+weekTotal+" ／ 獲得 "+weekSales+"件";for(const m of ["cut","product","sample","swing"]){document.getElementById("week-"+m).textContent=(weeklyMethods[m]||0)+"件";document.getElementById("week-"+m+"-rate").textContent="成約率 "+pct(weeklyMethods[m]||0,weeklyCounts[m]||0)}document.getElementById("week-natural").textContent=weeklyKinds.natural;document.getElementById("week-filter").textContent=weeklyKinds.filter;document.getElementById("week-note").textContent=weekUnknown?"※内訳未分類の獲得があるため、手法・商材の合計は総獲得数と一致しない場合があります。":"※手法別成約率＝その手法の獲得件数 ÷ その手法の母数";document.getElementById("report").value=buildReport(selectedCalendarDate);renderCalendar()}
+setupArrivalOptions();
+render();
+// Keep the home-screen app synchronized with Japan Standard Time, including midnight.
+let lastJstDay = dateKey();
+let lastJstMonth = monthKey();
+function syncJapanToday(){
+  const currentDay = dateKey();
+  const currentMonth = monthKey();
+  if(currentDay !== lastJstDay){
+    const wasViewingToday = selectedCalendarDate === lastJstDay;
+    const wasViewingCurrentMonth = calendarMonth.getFullYear()+"-"+String(calendarMonth.getMonth()+1).padStart(2,"0") === lastJstMonth;
+    lastJstDay = currentDay;
+    lastJstMonth = currentMonth;
+    if(wasViewingToday) selectedCalendarDate = currentDay;
+    if(wasViewingCurrentMonth) calendarMonth = new Date(Number(currentMonth.slice(0,4)), Number(currentMonth.slice(5))-1, 1);
+  }
+  render();
+}
+// Also refresh when iOS resumes a suspended Safari / home-screen session.
+setInterval(syncJapanToday, 15000);
+document.addEventListener("visibilitychange", () => { if(!document.hidden) syncJapanToday(); });
+window.addEventListener("pageshow", syncJapanToday);
+window.addEventListener("focus", syncJapanToday);
+</script></body></html>
